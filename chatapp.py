@@ -66,7 +66,7 @@ class ChatApp:
     def open_settings(self):
         settings_window = ctk.CTkToplevel(self.root)
         settings_window.title("Settings")
-        settings_window.geometry("400x500")
+        settings_window.geometry("400x600")
 
         label = ctk.CTkLabel(settings_window, text="Settings", font=("Arial", 22))
         label.pack(pady=20)
@@ -77,17 +77,23 @@ class ChatApp:
         name_entry.pack(pady=5)
         name_entry.insert(0, self.ai.name)
 
+        model_label = ctk.CTkLabel(settings_window, text="AI Model:", font=("Arial", 18))
+        model_label.pack(pady=5)
+        model_entry = ctk.CTkOptionMenu(settings_window, values=self.ai.models, font=("Arial", 18))
+        model_entry.pack(pady=5)
+        model_entry.set(self.ai.model)
+
         source_label = ctk.CTkLabel(settings_window, text="Audio source:", font=("Arial", 18))
         source_label.pack(pady=5)
         source_entry = ctk.CTkEntry(settings_window, font=("Arial", 18))
         source_entry.pack(pady=5)
-        source_entry.insert(0, self.tts_handler.speaker or "None")  # Corrected
+        source_entry.insert(0, self.tts_handler.speaker or "None")
 
         output_label = ctk.CTkLabel(settings_window, text="Audio output:", font=("Arial", 18))
         output_label.pack(pady=5)
         output_entry = ctk.CTkEntry(settings_window, font=("Arial", 18))
         output_entry.pack(pady=5)
-        output_entry.insert(0, self.tts_handler.output_file)  # Corrected
+        output_entry.insert(0, self.tts_handler.output_file)
 
         appearance_label = ctk.CTkLabel(settings_window, text="Appearance:", font=("Arial", 18))
         appearance_label.pack(pady=5)

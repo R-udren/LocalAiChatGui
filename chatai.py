@@ -1,5 +1,6 @@
 import asyncio
 
+import ollama
 from ollama import AsyncClient
 
 
@@ -7,6 +8,7 @@ class ChatAI:
     def __init__(self, model='llama3:8b', name='Jenny'):
         self.model = model
         self.name = name
+        self.models = [model.get('name') for model in ollama.Client().list().get('models', [])]
         self.messages = [
             {'role': 'system',
              'content': f'You are {name}. Real person. Write only human like answers. No code, no textual emotions.'
@@ -22,7 +24,7 @@ class ChatAI:
         return answer
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     ai = ChatAI()
     while True:
         _text = input("You: ")
