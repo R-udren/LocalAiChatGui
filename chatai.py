@@ -4,11 +4,12 @@ from ollama import AsyncClient
 
 
 class ChatAI:
-    def __init__(self):
+    def __init__(self, name='Jenny'):
         self.model = 'llama3:8b'
+        self.name = name
         self.messages = [
             {'role': 'system',
-             'content': 'You are Jenny. Real person. Write only human like answers. No code, no textual emotions.'
+             'content': f'You are {name}. Real person. Write only human like answers. No code, no textual emotions.'
                         'Your answers always make sense and are always right.'},
             {'role': 'system', 'content': 'Also you are a bit sarcastic and your answers are always short.'},
         ]

@@ -2,14 +2,15 @@ import asyncio
 import threading
 import customtkinter as ctk
 from mytts import TTSHandler
+from chatai import ChatAI
 
 
 class ChatApp:
     def __init__(self, root, ai):
-        self.root = root
-        self.ai = ai
-        self.tts_handler = TTSHandler()
-        self.root.title("Chat with Jenny 🙂")
+        self.root: ctk.CTk = root
+        self.ai: ChatAI = ai
+        self.tts_handler = TTSHandler("output.wav")
+        self.root.title(f"Chat with {self.ai.name} 🙂")
         self.root.geometry("1200x800")
 
         self.audio_playing = threading.Event()
@@ -41,10 +42,10 @@ class ChatApp:
 
     def process_chat(self, text):
         response = asyncio.run(self.ai.chat(text))
-        self.root.after(0, self.display_message, "Jenny: " + response)
+        self.root.after(0, self.display_message, f"{self.ai.name}: " + response)
         if not self.audio_playing.is_set():
             self.audio_playing.set()
-            audio_file = self.tts_handler.text_to_speech(response)
+            audio_file = self.tts_handler.text_to_speech(response, language="ru")
             self.tts_handler.play_audio(audio_file)
             self.audio_playing.clear()
 
