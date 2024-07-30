@@ -4,6 +4,8 @@ import customtkinter as ctk
 from mytts import TTSHandler
 from chatai import ChatAI
 
+ctk.set_appearance_mode("dark")
+
 
 class ChatApp:
     def __init__(self, root, ai, speaker_wav=None):
@@ -14,6 +16,12 @@ class ChatApp:
         self.root.geometry("1200x800")
 
         self.audio_playing = threading.Event()
+
+        self.top_frame = ctk.CTkFrame(self.root)
+        self.top_frame.pack(fill="x", padx=10, pady=10)
+
+        self.settings_button = ctk.CTkButton(self.top_frame, text="⚙", command=self.open_settings, height=40, width=40)
+        self.settings_button.pack(side="right", padx=5)
 
         self.messages_frame = ctk.CTkFrame(self.root)
         self.messages_frame.pack(fill="both", expand=True, padx=10, pady=10)
@@ -54,3 +62,48 @@ class ChatApp:
         self.text_widget.insert("end", message + "\n")
         self.text_widget.configure(state="disabled")
         self.text_widget.yview("end")
+
+    def open_settings(self):
+        settings_window = ctk.CTkToplevel(self.root)
+        settings_window.title("Settings")
+        settings_window.geometry("400x500")
+
+        label = ctk.CTkLabel(settings_window, text="Settings", font=("Arial", 22))
+        label.pack(pady=20)
+
+        name_label = ctk.CTkLabel(settings_window, text="AI Name:", font=("Arial", 18))
+        name_label.pack(pady=5)
+        name_entry = ctk.CTkEntry(settings_window, font=("Arial", 18))
+        name_entry.pack(pady=5)
+        name_entry.insert(0, self.ai.name)
+
+        source_label = ctk.CTkLabel(settings_window, text="Audio source:", font=("Arial", 18))
+        source_label.pack(pady=5)
+        source_entry = ctk.CTkEntry(settings_window, font=("Arial", 18))
+        source_entry.pack(pady=5)
+        source_entry.insert(0, self.tts_handler.speaker or "None")  # Corrected
+
+        output_label = ctk.CTkLabel(settings_window, text="Audio output:", font=("Arial", 18))
+        output_label.pack(pady=5)
+        output_entry = ctk.CTkEntry(settings_window, font=("Arial", 18))
+        output_entry.pack(pady=5)
+        output_entry.insert(0, self.tts_handler.output_file)  # Corrected
+
+        appearance_label = ctk.CTkLabel(settings_window, text="Appearance:", font=("Arial", 18))
+        appearance_label.pack(pady=5)
+        appearance_option = ctk.CTkOptionMenu(settings_window, values=["Dark", "Light"], font=("Arial", 18))
+        appearance_option.pack(pady=5)
+        appearance_option.set("Dark" if ctk.get_appearance_mode() == "dark" else "Light")
+
+        def save_settings():
+            self.ai.name = name_entry.get()
+            self.root.title(f"Chat with {self.ai.name} 🙂")
+            ctk.set_appearance_mode(appearance_option.get().lower())
+
+            self.tts_handler.speaker = source_entry.get()
+            self.tts_handler.output_file = output_entry.get()
+
+            settings_window.destroy()
+
+        save_button = ctk.CTkButton(settings_window, text="Save", command=save_settings, font=("Arial", 18))
+        save_button.pack(pady=20)
