@@ -4,8 +4,8 @@ from ollama import AsyncClient
 
 
 class ChatAI:
-    def __init__(self, name='Jenny'):
-        self.model = 'llama3:8b'
+    def __init__(self, model='llama3:8b', name='Jenny'):
+        self.model = model
         self.name = name
         self.messages = [
             {'role': 'system',

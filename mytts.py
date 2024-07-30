@@ -22,8 +22,10 @@ class TTSHandler:
 
         if self.tts.is_multi_lingual:
             language = language or "en"
+        else:
+            language = None
 
-        self.tts.tts_to_file(text=text, split_sentences=False, file_path=self.output_file, language=language,
+        self.tts.tts_to_file(text=text, split_sentences=True, file_path=self.output_file, language=language,
                              speaker_wav=self.speaker)
         return self.output_file
 

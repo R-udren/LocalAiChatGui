@@ -6,10 +6,10 @@ from chatai import ChatAI
 
 
 class ChatApp:
-    def __init__(self, root, ai):
+    def __init__(self, root, ai, speaker_wav=None):
         self.root: ctk.CTk = root
         self.ai: ChatAI = ai
-        self.tts_handler = TTSHandler("output.wav")
+        self.tts_handler = TTSHandler(speaker_wav)
         self.root.title(f"Chat with {self.ai.name} 🙂")
         self.root.geometry("1200x800")
 
