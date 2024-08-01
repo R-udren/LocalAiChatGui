@@ -1,5 +1,6 @@
 import asyncio
 
+import httpx
 import ollama
 from ollama import AsyncClient
 
@@ -8,7 +9,13 @@ class ChatAI:
     def __init__(self, model='llama3:8b', name='Jenny'):
         self.model = model
         self.name = name
-        self.models = [model.get('name') for model in ollama.Client().list().get('models', [])]
+        try:
+            self.models = [model.get('name') for model in ollama.Client().list().get('models', [])]
+        except httpx.ConnectError:
+            self.models = []
+            print('Failed to fetch models. Is ollama server running?')
+        if not self.models:
+            print('No models available. Please check your connection and try again.')
         self.messages = [
             {'role': 'system',
              'content': f'You are {name}. Real person. Write only human like answers. No code, no textual emotions.'
