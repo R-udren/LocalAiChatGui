@@ -17,9 +17,9 @@ class ChatApp:
 
         self.audio_playing = threading.Event()
 
-        self.big_font = ("Arial", 22)
-        self.medium_font = ("Arial", 18)
-        self.small_font = ("Arial", 14)
+        self.big_font = ctk.CTkFont(size=24)
+        self.medium_font = ctk.CTkFont(size=18)
+        self.small_font = ctk.CTkFont(size=14)
 
         self.top_frame = ctk.CTkFrame(self.root)
         self.top_frame.pack(fill="x", padx=10, pady=10)
