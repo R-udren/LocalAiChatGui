@@ -115,7 +115,7 @@ class ChatApp:
         appearance_label.pack(pady=5)
         appearance_option = ctk.CTkOptionMenu(settings_window, values=["Dark", "Light"], font=self.medium_font)
         appearance_option.pack(pady=5)
-        appearance_option.set("Dark" if ctk.get_appearance_mode() == "dark" else "Light")
+        appearance_option.set(ctk.get_appearance_mode())
 
         reset_chat_button = ctk.CTkButton(settings_window, text="Reset Chat", command=self.reset_chat,
                                           font=self.medium_font)
